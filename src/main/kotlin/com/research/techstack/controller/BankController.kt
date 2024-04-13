@@ -4,8 +4,10 @@ import com.research.techstack.model.Bank
 import com.research.techstack.service.BankService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -37,5 +39,13 @@ class BankController(private val bankService: BankService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun addBank(@RequestBody newBank: Bank): Bank {
         return bankService.addBank(newBank)
+    }
+
+    @PatchMapping
+    fun updateBank(@RequestBody newBank: Bank) = bankService.updateBank(newBank)
+
+    @DeleteMapping("{id}")
+    fun deleteBank(@PathVariable id: String) {
+        bankService.deleteBank(id)
     }
 }

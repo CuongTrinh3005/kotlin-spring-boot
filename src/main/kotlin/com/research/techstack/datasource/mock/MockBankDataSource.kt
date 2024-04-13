@@ -27,4 +27,26 @@ class MockBankDataSource : BankDataSource {
         banks.add(newBank)
         return newBank
     }
+
+    override fun updateBank(newBank: Bank): Bank {
+        val doesExist = banks.any{it.accountNumber == newBank.accountNumber}
+        if(!doesExist)
+            throw NoSuchElementException("Bank with account number ${newBank.accountNumber} not found")
+
+        val existBank = banks.single{it.accountNumber == newBank.accountNumber}
+
+        existBank.accountNumber = newBank.accountNumber
+        existBank.trust = newBank.trust
+        existBank.transactionFee = newBank.transactionFee
+
+        return existBank
+    }
+
+    override fun deleteBank(id: String) {
+        val doesExist = banks.any{it.accountNumber == id}
+        if(!doesExist)
+            throw NoSuchElementException("Bank with account number $id not found")
+
+        banks.removeIf{it.accountNumber == id}
+    }
 }
