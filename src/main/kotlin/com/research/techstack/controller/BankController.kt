@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.io.IOException
 import java.lang.IllegalArgumentException
 
 @RestController
@@ -26,6 +27,10 @@ class BankController(private val bankService: BankService) {
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleBadRequest(error: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity(error.message, HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(IOException::class)
+    fun handleIOException(error: IOException): ResponseEntity<String> =
+        ResponseEntity(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
 
     @GetMapping
     fun getBanks(): Collection<Bank> = bankService.getBanks()
